@@ -13,7 +13,8 @@ public class UltiBar : MonoBehaviour
 
     public ParticleSystem particle;
 
-    bool particlesPlayed = false;
+    bool particlesPlayed = true;
+
 
     public void SetMaxUltiState(float ultiState)
     {

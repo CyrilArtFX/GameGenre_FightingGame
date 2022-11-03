@@ -14,15 +14,20 @@ public class ActifBar : MonoBehaviour
 
     public ParticleSystem particle;
 
-    bool particlesPlayed = false;
+    bool particlesPlayed = true;
 
-    public void SetMaxActifState(int actifState)
+    private void Start()
+    {
+        
+    }
+
+    public void SetMaxActifState(float actifState)
     {
         slider.maxValue = actifState;
         slider.value = actifState;
     }
 
-    public void SetActifState(int actifState)
+    public void SetActifState(float actifState)
     {
         slider.value = actifState;
 

@@ -25,9 +25,13 @@ public class Player : MonoBehaviour
     Material baseMat, ultiMat;
 
     [SerializeField]
+    ActifBar stompBar;
+    [SerializeField]
+    UltiBar ultiBar;
+
+    [SerializeField]
     Animator anim;
     Rigidbody rb;
-    CapsuleCollider cc;
 
     bool reverseOrientation = false;
     bool disableAction = false;
@@ -42,7 +46,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        cc = GetComponent<CapsuleCollider>();
         punchCollider.SetActive(false);
         stompCollider.SetActive(false);
         ultiCD = ultiCooldown;
@@ -115,8 +118,9 @@ public class Player : MonoBehaviour
         //  stomp
         if (stompCD > 0.0f)
         {
-            stompCD -= Time.deltaTime * ulti > 0.0f ? 2.0f : 1.0f;
+            stompCD -= Time.deltaTime * (ulti > 0.0f ? 2.0f : 1.0f);
         }
+        stompBar.SetActifState(1.0f - stompCD / stompCooldown);
         if (Input.GetButtonDown("Stomp"))
         {
             if (CanStomp())
@@ -148,6 +152,7 @@ public class Player : MonoBehaviour
         {
             ultiCD -= Time.deltaTime;
         }
+        ultiBar.SetUltiState(1.0f - ultiCD / ultiCooldown);
         if (Input.GetButtonDown("Ulti"))
         {
             if (CanUlti())
