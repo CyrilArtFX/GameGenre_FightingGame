@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    float runSpeed, jumpForce, dashLength;
+    float runSpeed, jumpForce, dashLength, ultiDuration, ultiAttackSpeedBoost;
 
     [SerializeField]
-    float stompCooldown, dashCooldown;
+    float stompCooldown, dashCooldown, ultiCooldown;
 
     [SerializeField]
     Transform groundDetector;
@@ -20,6 +20,11 @@ public class Player : MonoBehaviour
     GameObject punchCollider, stompCollider;
 
     [SerializeField]
+    Renderer bodyRenderer;
+    [SerializeField]
+    Material baseMat, ultiMat;
+
+    [SerializeField]
     Animator anim;
     Rigidbody rb;
     CapsuleCollider cc;
@@ -27,9 +32,12 @@ public class Player : MonoBehaviour
     bool reverseOrientation = false;
     bool disableAction = false;
     bool punch = false;
+    float ulti = 0.0f;
+    bool ultiActivation = false;
 
     float stompCD = 0.0f;
     float dashCD = 0.0f;
+    float ultiCD = 0.0f;
 
     void Start()
     {
@@ -37,19 +45,39 @@ public class Player : MonoBehaviour
         cc = GetComponent<CapsuleCollider>();
         punchCollider.SetActive(false);
         stompCollider.SetActive(false);
+        ultiCD = ultiCooldown;
+        anim.SetFloat("AttackSpeedBoost", 1.0f);
     }
 
     void Update()
     {
+        //  ulti activation logic
+        if (ultiActivation)
+        {
+            return;
+        }
+
+
+        //  ulti boost logic
+        if (ulti > 0.0f)
+        {
+            ulti -= Time.deltaTime;
+            if (ulti <= 0.0f)
+            {
+                EndUlti();
+            }
+        }
+
+
         //  move
         rb.velocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
         float playerMov = Input.GetAxisRaw("Horizontal");
-        if(playerMov > 0)
+        if (playerMov > 0)
         {
             reverseOrientation = false;
             rb.velocity += Vector3.forward * runSpeed;
         }
-        else if(playerMov < 0)
+        else if (playerMov < 0)
         {
             reverseOrientation = true;
             rb.velocity += Vector3.back * runSpeed;
@@ -57,11 +85,11 @@ public class Player : MonoBehaviour
         transform.LookAt((reverseOrientation ? Vector3.back : Vector3.forward) * 100000.0f);
         anim.SetFloat("Speed", Mathf.Abs(playerMov));
 
-        
+
         //  jump
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
-            if(CanJump())
+            if (CanJump())
             {
                 rb.AddForce(Vector3.up * jumpForce);
                 anim.SetTrigger("Jump");
@@ -70,14 +98,14 @@ public class Player : MonoBehaviour
 
 
         //  punch
-        if(Input.GetButtonDown("Punch"))
+        if (Input.GetButtonDown("Punch"))
         {
-            if(!disableAction)
+            if (!disableAction)
             {
                 punch = true;
             }
         }
-        if(Input.GetButtonUp("Punch"))
+        if (Input.GetButtonUp("Punch"))
         {
             punch = false;
         }
@@ -85,13 +113,13 @@ public class Player : MonoBehaviour
 
 
         //  stomp
-        if(stompCD > 0.0f)
+        if (stompCD > 0.0f)
         {
-            stompCD -= Time.deltaTime;
+            stompCD -= Time.deltaTime * ulti > 0.0f ? 2.0f : 1.0f;
         }
-        if(Input.GetButtonDown("Stomp"))
+        if (Input.GetButtonDown("Stomp"))
         {
-            if(CanStomp())
+            if (CanStomp())
             {
                 disableAction = true;
                 stompCD = stompCooldown;
@@ -101,19 +129,35 @@ public class Player : MonoBehaviour
 
 
         //  dash
-        if(dashCD > 0.0f)
+        if (dashCD > 0.0f)
         {
             dashCD -= Time.deltaTime;
         }
-        if(Input.GetButtonDown("Dash"))
+        if (Input.GetButtonDown("Dash"))
         {
-            if(CanDash())
+            if (CanDash())
             {
                 dashCD = dashCooldown;
                 Dash();
             }
         }
-            
+
+
+        //  ulti
+        if (ultiCD > 0.0f)
+        {
+            ultiCD -= Time.deltaTime;
+        }
+        if (Input.GetButtonDown("Ulti"))
+        {
+            if (CanUlti())
+            {
+                disableAction = true;
+                ultiCD = ultiCooldown;
+                anim.SetTrigger("Ulti");
+            }
+        }
+
 
         //  global
         anim.SetBool("Grounded", Grounded());
@@ -135,6 +179,11 @@ public class Player : MonoBehaviour
         return Grounded() && !disableAction && dashCD <= 0.0f;
     }
 
+    bool CanUlti()
+    {
+        return !disableAction && ultiCD <= 0.0f && ulti <= 0.0f;
+    }
+
     bool Grounded()
     {
         Collider[] cols = Physics.OverlapSphere(groundDetector.position, 0.2f, groundMask);
@@ -147,6 +196,19 @@ public class Player : MonoBehaviour
         rb.AddForce(transform.forward * dashLength * 3000.0f);
     }
 
+    void StartUlti()
+    {
+        bodyRenderer.material = ultiMat;
+        anim.SetFloat("AttackSpeedBoost", ultiAttackSpeedBoost);
+    }
+
+    void EndUlti()
+    {
+        anim.SetFloat("AttackSpeedBoost", 1.0f);
+        bodyRenderer.material = baseMat;
+    }
+
+
     public void Punch()
     {
         punchCollider.SetActive(true);
@@ -155,6 +217,24 @@ public class Player : MonoBehaviour
     public void Stomp()
     {
         stompCollider.SetActive(true);
+    }
+
+    public void ActivateUlti()
+    {
+        punchCollider.SetActive(false);
+        stompCollider.SetActive(false);
+        ultiActivation = true;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+    }
+
+    public void Ulti()
+    {
+        ultiActivation = false;
+        disableAction = false;
+        rb.useGravity = true;
+        ulti = ultiDuration;
+        StartUlti();
     }
 
 

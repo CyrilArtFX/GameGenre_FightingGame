@@ -20,4 +20,14 @@ public class PlayerEventRelay : MonoBehaviour
     {
         player.ResetAttacks();
     }
+
+    public void ActivateUlti()
+    {
+        player.ActivateUlti();
+    }
+
+    public void Ulti()
+    {
+        player.Ulti();
+    }
 }
