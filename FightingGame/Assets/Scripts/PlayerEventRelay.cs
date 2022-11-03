@@ -11,8 +11,13 @@ public class PlayerEventRelay : MonoBehaviour
         player.Punch();
     }
 
-    public void EndPunch()
+    public void Stomp()
     {
-        player.EndPunch();
+        player.Stomp();
+    }
+
+    public void ResetAttacks()
+    {
+        player.ResetAttacks();
     }
 }

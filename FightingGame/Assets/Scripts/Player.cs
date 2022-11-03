@@ -1,32 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    float runSpeed, jumpForce;
+    float runSpeed, jumpForce, dashLength;
+
+    [SerializeField]
+    float stompCooldown, dashCooldown;
 
     [SerializeField]
     Transform groundDetector;
     [SerializeField]
-    LayerMask groundMask;
+    LayerMask groundMask, obstacleMask;
 
     [SerializeField]
-    GameObject punchCollider;
+    GameObject punchCollider, stompCollider;
 
     [SerializeField]
     Animator anim;
     Rigidbody rb;
+    CapsuleCollider cc;
 
     bool reverseOrientation = false;
     bool disableAction = false;
     bool punch = false;
 
+    float stompCD = 0.0f;
+    float dashCD = 0.0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CapsuleCollider>();
         punchCollider.SetActive(false);
+        stompCollider.SetActive(false);
     }
 
     void Update()
@@ -74,13 +84,55 @@ public class Player : MonoBehaviour
         anim.SetBool("Punch", punch);
 
 
+        //  stomp
+        if(stompCD > 0.0f)
+        {
+            stompCD -= Time.deltaTime;
+        }
+        if(Input.GetButtonDown("Stomp"))
+        {
+            if(CanStomp())
+            {
+                disableAction = true;
+                stompCD = stompCooldown;
+                anim.SetTrigger("Stomp");
+            }
+        }
+
+
+        //  dash
+        if(dashCD > 0.0f)
+        {
+            dashCD -= Time.deltaTime;
+        }
+        if(Input.GetButtonDown("Dash"))
+        {
+            if(CanDash())
+            {
+                dashCD = dashCooldown;
+                Dash();
+            }
+        }
+            
+
         //  global
         anim.SetBool("Grounded", Grounded());
     }
 
+
     bool CanJump()
     {
         return Grounded() && !disableAction;
+    }
+
+    bool CanStomp()
+    {
+        return Grounded() && !disableAction && stompCD <= 0.0f;
+    }
+
+    bool CanDash()
+    {
+        return Grounded() && !disableAction && dashCD <= 0.0f;
     }
 
     bool Grounded()
@@ -89,13 +141,27 @@ public class Player : MonoBehaviour
         return cols.Length > 0;
     }
 
+
+    void Dash()
+    {
+        rb.AddForce(transform.forward * dashLength * 3000.0f);
+    }
+
     public void Punch()
     {
         punchCollider.SetActive(true);
     }
 
-    public void EndPunch()
+    public void Stomp()
+    {
+        stompCollider.SetActive(true);
+    }
+
+
+    public void ResetAttacks()
     {
         punchCollider.SetActive(false);
+        stompCollider.SetActive(false);
+        disableAction = false;
     }
 }
