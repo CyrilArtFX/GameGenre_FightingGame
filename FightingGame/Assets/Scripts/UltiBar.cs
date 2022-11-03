@@ -11,14 +11,37 @@ public class UltiBar : MonoBehaviour
 
     public Image ultiIcon;
 
-    public void SetMaxUltiState(int ultiState)
+    public ParticleSystem particle;
+
+    bool particlesPlayed = false;
+
+    public void SetMaxUltiState(float ultiState)
     {
         slider.maxValue = ultiState;
         slider.value = ultiState;
     }
 
-    public void SetUltiState(int ultiState)
+    public void SetUltiState(float ultiState)
     {
         slider.value = ultiState;
+        
+        fill.color = gradient.Evaluate(ultiState);
     }
+
+    private void Update()
+    {
+        fill.color = gradient.Evaluate(slider.value);
+
+        if (slider.value >= 1f && !particlesPlayed)
+        {
+            particlesPlayed = true;
+            particle.Play();
+        }
+
+        if(slider.value < 1f && particlesPlayed)
+        {
+            particlesPlayed = false;
+        }
+    }
+
 }
