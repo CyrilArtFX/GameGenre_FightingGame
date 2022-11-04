@@ -8,6 +8,9 @@ public class Enemy : MonoBehaviour
     Transform player;
 
     [SerializeField]
+    ParticleSystem hitParticles;
+
+    [SerializeField]
     LayerMask attackMask;
 
     Rigidbody rb;
@@ -58,6 +61,8 @@ public class Enemy : MonoBehaviour
     void OnTriggerEnter(Collider hitCol)
     {
         if ((attackMask & (1 << hitCol.gameObject.layer)) == 0) return;
+
+        hitParticles.Play();
 
         AttackInfos hitInfos = hitCol.gameObject.GetComponent<AttackInfos>();
 

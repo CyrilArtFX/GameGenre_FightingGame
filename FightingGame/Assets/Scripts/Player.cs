@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     Material baseMat, ultiMat;
 
     [SerializeField]
-    ParticleSystem stompParticles, ultiParticles;
+    ParticleSystem stompParticles, ultiParticles, endUltiParticles, dashParticles;
 
     [SerializeField]
     ActifBar stompBar;
@@ -202,6 +202,7 @@ public class Player : MonoBehaviour
     void Dash()
     {
         rb.AddForce(transform.forward * dashLength * 3000.0f);
+        dashParticles.Play();
     }
 
     void StartUlti()
@@ -214,6 +215,7 @@ public class Player : MonoBehaviour
     {
         anim.SetFloat("AttackSpeedBoost", 1.0f);
         bodyRenderer.material = baseMat;
+        endUltiParticles.Play();
     }
 
 
