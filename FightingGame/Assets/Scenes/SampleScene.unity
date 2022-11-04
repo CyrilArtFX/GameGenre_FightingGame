@@ -11390,7 +11390,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1044529271}
   - component: {fileID: 1044529272}
-  m_Layer: 0
+  - component: {fileID: 1044529273}
+  m_Layer: 7
   m_Name: StompCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11426,6 +11427,24 @@ CapsuleCollider:
   m_Height: 2.414557
   m_Direction: 2
   m_Center: {x: 0, y: 0.4784172, z: 0.09670186}
+--- !u!114 &1044529273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044529270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61271a298fb9949498e0bb814d1810ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damages: 5
+  maxStunTime: 0
+  stunTimeDiminution: 0
+  firstHitProjection: {x: 0, y: 3, z: 1}
+  hitProjectionAccumulation: {x: 0, y: 3, z: 1}
+  bypassProjectionDiminution: 1
 --- !u!1001 &1047977113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12280,7 +12299,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 37b8c710cc65fe84e93b6f85adf74a1f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.14127198
+  m_Radius: 0.3
   m_Height: 1.8057944
   m_Direction: 1
   m_Center: {x: 0.002344638, y: 0.90933675, z: 0}
@@ -12324,9 +12343,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 64
   punchCollider: {fileID: 1941449594}
   stompCollider: {fileID: 1044529270}
   bodyRenderer: {fileID: 1908525914}
@@ -12337,6 +12353,138 @@ MonoBehaviour:
   stompBar: {fileID: 708869144}
   ultiBar: {fileID: 343054406}
   anim: {fileID: 1047977116}
+--- !u!1 &1213019992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1213019996}
+  - component: {fileID: 1213019995}
+  - component: {fileID: 1213019994}
+  - component: {fileID: 1213019998}
+  - component: {fileID: 1213019993}
+  - component: {fileID: 1213019997}
+  m_Layer: 8
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!136 &1213019993
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213019992}
+  m_Material: {fileID: 13400000, guid: 8903dfdb9c4df574b89d82acb61f62cd, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1213019994
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213019992}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: d8540f0ae63c96a4f825803f4a01e0c3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1213019995
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213019992}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1213019996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213019992}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1213019997
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213019992}
+  serializedVersion: 2
+  m_Mass: 1000
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 114
+  m_CollisionDetection: 0
+--- !u!114 &1213019998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213019992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341cf2a1fc7e11a4d9531e584a038d06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1195387994}
+  attackMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1415392223
 GameObject:
   m_ObjectHideFlags: 0
@@ -22199,7 +22347,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1941449595}
   - component: {fileID: 1941449596}
-  m_Layer: 0
+  - component: {fileID: 1941449597}
+  m_Layer: 7
   m_Name: PunchCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22235,3 +22384,21 @@ CapsuleCollider:
   m_Height: 0.5
   m_Direction: 2
   m_Center: {x: 0, y: 1.21, z: 0.69}
+--- !u!114 &1941449597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941449594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61271a298fb9949498e0bb814d1810ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damages: 1
+  maxStunTime: 1
+  stunTimeDiminution: 0.2
+  firstHitProjection: {x: 0, y: 0, z: 0}
+  hitProjectionAccumulation: {x: 0, y: 0.6, z: 1}
+  bypassProjectionDiminution: 0

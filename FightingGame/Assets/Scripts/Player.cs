@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     Transform groundDetector;
     [SerializeField]
-    LayerMask groundMask, obstacleMask;
+    LayerMask groundMask;
 
     [SerializeField]
     GameObject punchCollider, stompCollider;
