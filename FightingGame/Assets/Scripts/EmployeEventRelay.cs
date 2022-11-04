@@ -21,6 +21,11 @@ public class EmployeEventRelay : MonoBehaviour
         employe.ResetAttacks();
     }
 
+    public void ResetAttacksBeginning()
+    {
+        employe.ResetAttacksBeginning();
+    }
+
     public void ActivateUlti()
     {
         employe.ActivateUlti();

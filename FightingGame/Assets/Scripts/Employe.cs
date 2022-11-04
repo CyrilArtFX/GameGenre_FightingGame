@@ -131,7 +131,6 @@ public class Employe : MonoBehaviour
             }
         }
 
-
         //  dash
         if (dashCD > 0.0f)
         {
@@ -252,5 +251,11 @@ public class Employe : MonoBehaviour
         punchCollider.SetActive(false);
         stompCollider.SetActive(false);
         disableAction = false;
+    }
+
+    public void ResetAttacksBeginning()
+    {
+        punchCollider.SetActive(false);
+        stompCollider.SetActive(false);
     }
 }
