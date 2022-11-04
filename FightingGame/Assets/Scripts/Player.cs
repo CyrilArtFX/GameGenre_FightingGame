@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
     Material baseMat, ultiMat;
 
     [SerializeField]
+    ParticleSystem stompParticles, ultiParticles;
+
+    [SerializeField]
     ActifBar stompBar;
     [SerializeField]
     UltiBar ultiBar;
@@ -222,6 +225,7 @@ public class Player : MonoBehaviour
     public void Stomp()
     {
         stompCollider.SetActive(true);
+        stompParticles.Play();
     }
 
     public void ActivateUlti()
@@ -231,6 +235,7 @@ public class Player : MonoBehaviour
         ultiActivation = true;
         rb.velocity = Vector3.zero;
         rb.useGravity = false;
+        ultiParticles.Play();
     }
 
     public void Ulti()
