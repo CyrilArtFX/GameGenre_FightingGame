@@ -2465,7 +2465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85eb0c6ee594b664bab263150b6fbb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1195387997}
+  employe: {fileID: 1195387997}
 --- !u!1 &1068545344
 GameObject:
   m_ObjectHideFlags: 0
@@ -2555,7 +2555,7 @@ GameObject:
   - component: {fileID: 1195387995}
   - component: {fileID: 1195387997}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Employe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
